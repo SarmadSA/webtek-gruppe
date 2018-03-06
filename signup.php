@@ -1,12 +1,24 @@
 <?php
 
-//connect to database;
+//CHECK IF USER IS ALREADY REGISTERED BEFORE SENDING TO DATABASE.
+
+//connect to database
 $db = mysqli_connect('localhost', 'root', '', 'registration');
 
+//Error & succes messages
+$emptyEmailErr = "Vennligst skriv din epost!";
+$emailFormatErr = "Ugyldig epost format! Venligst skriv en virkelig epost!";
+$emptyPasswordErr = "Vennligst skriv et passord!";
+$shortPasswordErr = "Passordet må være minst 6 tegn.";
+$disMatchPasswordErr = "Passordene er ikke like.";
+$agreementErr = "Du må akseptere vilkårene.";
+$faildRegistrarionErr = "Registrering mislyktes, Vennligst prøv igjen!";
+$succesRegistrarionErr_p1 = "Registrering vellykket!";
+$succesRegistrarionErr_p2 = "Ditt innloggins brukernavn er: ";
+
+
 $submitted = false;
-$email = "";
-$password = "";
-$rePassword = "";
+$email = $password = $rePassword = "";
 
 //Check for submittion.
 if (isset($_POST['submit'])) {
@@ -80,47 +92,55 @@ function isSamePassword($submittedPassword, $submittedRePassword){
 }
 
 function printEmailError($submittedEmail) {
-    $errorMessage = "";
-    if (isset($_POST['submit']) && (strlen($submittedEmail) < 1)) {
-        $errorMessage = "Vennligst skriv din epost!";
-    } else if (isset($_POST['submit']) && !filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
-        $errorMessage = "Ugyldig epost! Venligst skriv din virkelig epost!";
+	global $submitted;	
+	global $emptyEmailErr;	
+	global $emailFormatErr;	
+	
+    if ($submitted && (strlen($submittedEmail) < 1)) {
+        echo $emptyEmailErr;
+    } 
+	else if ($submitted && !filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
+        echo $emailFormatErr;
     }
-    echo $errorMessage;
 }
 
 function printPasswordError($submittedPassword, $submittedrePassword) {
-    $errorMessage = "";
-    if (isset($_POST['submit']) && (strlen($submittedPassword) < 1)) {
-        $errorMessage = "Vennligst skriv et passord!";
-    } else if (isset($_POST['submit']) && ((strlen($submittedPassword) < 6) && (strlen($submittedPassword) > 0))) {
-        $errorMessage = "Passordet må være minst 6 tegn.";
+	global $submitted;
+	global $emptyPasswordErr;
+	global $shortPasswordErr;
+	global $disMatchPasswordErr;
+		
+    if ($submitted && (strlen($submittedPassword) < 1)) {
+        echo $emptyPasswordErr;
+    } 
+	else if ($submitted && ((strlen($submittedPassword) < 6) && (strlen($submittedPassword) > 0))) {
+        echo $shortPasswordErr;
     }
-    else if(isset($_POST['submit']) && !isSamePassword($submittedPassword, $submittedrePassword)){
-      $errorMessage = "Passordene  er ikke like";
+    else if($submitted && !isSamePassword($submittedPassword, $submittedrePassword)){
+      echo $disMatchPasswordErr;
     }
-    echo $errorMessage;
 }
 
 function printagreementError(){
 	global $submitted;
-	$errorMessage = "";
+	global $agreementErr;
 	if($submitted && !agreedToTermsOfUse()){
-		$errorMessage = "Du må akseptere vilkårene for bruk";
+		echo $agreementErr;
 	}
-	echo $errorMessage;
 }
 
 function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedRePassword) {
-	global $submitted;
-    $submittionMessage = "";
+	global $submitted; 
+	global $succesRegistrarionErr_p1; 
+	global $succesRegistrarionErr_p2; 
+	global $faildRegistrarionErr;
+	
     if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
-        $submittionMessage = "<p>Registrering vellykket!</p>" . "<p>Ditt innloggins brukernavn er: " . $submittedEmail . "</p>" . "<br><br>";
+        echo "<p>" . $succesRegistrarionErr_p1 . "<br>" . $succesRegistrarionErr_p2 . $submittedEmail . "</p>" . "<br><br>";
     } 
 	else if ($submitted && !isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
-        $submittionMessage = "<p>Registrering mislyktes, Vennligst prøv igjen!</p><br><br>";
+        echo "<p>" . $faildRegistrarionErr . "</p><br><br>";
     }
-    echo $submittionMessage;
 }
 
 ?>
