@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background: grey;
+  padding: 20px 10px;
+}
+
+.brand {
+  float: left;
+}
+
+.brand a{
+  color: black;
+  text-decoration: none;
+}
+
+.mainNav {
+   text-align: right;
+}
+
+.mainNav li{
+  display: inline-block;
+}
+
+.mainNav li a {
+  text-decoration: none;
+  color: black;
+}
+
+.secondNav {
+  background: red;
+}
+
+.secondNav li {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.secondNav li a{
+  text-decoration: none;
+  color: black;
+}
+
+.mainBody {
+
+}
+
+.aside  {
+  float: left;
+  background: green;
+  position: fixed;
+  margin: 10px 20px;
+}
+
+.aside ul {
+  list-style-type: none;
+}
+
+.aside li a {
+  text-decoration: none;
+  color: black;
+}
+
+.postSection {
+  text-align: center;
+  background: orange;
+}
+
+.postNav  {
+ margin-right: 100px;
+}
+
+.postNav li {
+  display: inline-block;
+}
+
+.postNav li a {
+  text-decoration: none;
+  color: black;
+}
+
+.buttonSection {
+  text-align: center;
+}
+
+.buttonSection a {
+  text-decoration: none;
+  color: black;
+  margin: 5px 200px;
+}
