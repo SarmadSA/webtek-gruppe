@@ -14,7 +14,6 @@ if (isset($_POST['submit'])) {
     $password = rtrim($password);
 }
 
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,16 +28,16 @@ if (isset($_POST['submit'])) {
 
         <form action="signup.php" method="post">
             <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
-             <?php printSubmittionMessage($email,$password,$rePassword);?>
+             <?php /*printSubmittionMessage($email,$password,$rePassword);*/?>
             <label for="email">E-mail:</label>
             <br>
             <input type="text" name="email" id="email" placeholder="Your email..">
-            <span class="error-message"> <?php printEmailError($email)?> </span>
+            <span class="error-message"> <?php /*printEmailError($email)*/?> </span>
             <br>
             <label for="subject">Password:</label>
             <br>
             <input type="password" name="repassword" id="subject" placeholder="Enter the subject.."> 
-            <span class="error-message"> <?php printPasswordError($password, $rePassword) ?> </span>
+            <span class="error-message"> <?php /*printPasswordError($password, $rePassword)*/ ?> </span>
             <br>
             <br>
             <input type="submit" name="submit" value="logg inn">
