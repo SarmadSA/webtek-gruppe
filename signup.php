@@ -1,10 +1,17 @@
 <?php
+
+//connect to database;
+$db = mysqli_connect('localhost', 'root', '', 'registration');
+
+$submitted = false;
 $email = "";
 $password = "";
 $rePassword = "";
 
 //Check for submittion.
 if (isset($_POST['submit'])) {
+	$submitted = true;
+	
     $email = $_POST['email'];
     $password = $_POST['password'];
     $rePassword = $_POST['repassword'];
@@ -12,14 +19,39 @@ if (isset($_POST['submit'])) {
     //Remove all spaces at the right and the left of the input.
     $email = ltrim($email);
     $email = rtrim($email);
+	
 	//Skal det være mulig å starte eller slutte passordet med "space"? da fjerner du koden nederst.
     $password = ltrim($password);
     $password = rtrim($password);
     $rePassword = ltrim($rePassword);
     $rePassword = rtrim($rePassword);
 	
+	//Save to database if the form is valid.
+	if(isValidForm($email,$password,$rePassword)){
+		saveToDatabase($password, $email, $db);
+	}
+	
 }
 
+function saveToDatabase($submittedPassword, $submittedEmail, $database){
+	$submittedPassword = md5($submittedPassword);
+	$sql = "INSERT INTO users(email, password) VALUES ('$submittedEmail','$submittedPassword')";
+	mysqli_query($database, $sql);	
+}
+
+function isValidForm($submittedEmail,$submittedPassword,$submittedRePassword){
+	$isValid = false;
+	if(isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword) && agreedToTermsOfUse()){
+		$isValid = true;
+	}
+	return $isValid;
+}
+
+/**
+*Return true or false depending on wether the user accepts terms of use or not. 
+*
+*@return return true or false depending on wether the user accepts terms of use or not. 
+*/
 function agreedToTermsOfUse(){
 	$agreedToTermsOfUse = false;
 	if(isset($_POST['checkbox'])){
@@ -83,18 +115,21 @@ function printPasswordError($submittedPassword, $submittedrePassword) {
 }
 
 function printagreementError(){
+	global $submitted;
 	$errorMessage = "";
-	if(isset($_POST['submit']) && !agreedToTermsOfUse()){
+	if($submitted && !agreedToTermsOfUse()){
 		$errorMessage = "Du må akseptere vilkårene for bruk";
 	}
 	echo $errorMessage;
 }
 
 function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedRePassword) {
+	global $submitted;
     $submittionMessage = "";
-    if (isset($_POST['submit']) && isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword) && agreedToTermsOfUse()) {
+    if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
         $submittionMessage = "<p>Registrering vellykket!</p>" . "<p>Ditt innloggins brukernavn er: " . $submittedEmail . "</p>" . "<br><br>";
-    } else if ((isset($_POST['submit'])) && (!isValidEmail($submittedEmail) || !isValidPassword($submittedPassword) || !isSamePassword($submittedPassword, $submittedRePassword) || !agreedToTermsOfUse())) {
+    } 
+	else if ($submitted && !isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
         $submittionMessage = "<p>Registrering mislyktes, Vennligst prøv igjen!</p><br><br>";
     }
     echo $submittionMessage;
@@ -117,7 +152,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
              <?php printSubmittionMessage($email,$password,$rePassword);?>
             <label for="email">Epost:</label>
             <br>
-            <input type="text" name="email" id="email" placeholder="Din epost..">
+            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php echo $email?>">
             <span class="error-message"> * <?php printEmailError($email)?> </span>
             <br>
             <label for="subject">Passord:</label>
@@ -131,7 +166,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
             <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
             <br>
 			<br>
-			<label for="checkbox">Jeg er enig i <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
+			<label for="checkbox">Jeg aksepterer <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
 			<input type="checkbox" id="checkbox" name="checkbox">
 			<span class="error-message">  <?php printagreementError();?> </span>
 			<br>
