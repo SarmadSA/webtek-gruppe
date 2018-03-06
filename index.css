@@ -2,7 +2,8 @@
   margin: 0;
   padding: 0;
 }
-
+/*GLOBAL START*/
+/* HEADER START */
 .header {
   background: grey;
   padding: 20px 10px;
@@ -43,16 +44,15 @@
   text-decoration: none;
   color: black;
 }
+/* HEADER START */
 
-.mainBody {
-
-}
-
+/* ASIDE START */
 .aside  {
   float: left;
-  background: green;
+  background: lightgrey;
   position: fixed;
   margin: 10px 20px;
+  border: 1px solid black;
 }
 
 .aside ul {
@@ -62,6 +62,13 @@
 .aside li a {
   text-decoration: none;
   color: black;
+}
+/* ASIDE END */
+/*GLOBAL END*/
+
+
+.mainBody {
+
 }
 
 .postSection {
@@ -91,3 +98,41 @@
   color: black;
   margin: 5px 200px;
 }
+
+/*ABOUT START*/
+.column {
+  float: left;
+  width: 48.5%;
+  margin-bottom: 16px;
+  margin-left: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 650px) {
+    .column {
+        width: 100%;
+        display: block;
+    }
+}
+
+.memberContent {
+  text-align: center;
+  margin: 10px 200px;
+}
+
+.profileAbout {
+  float: left;
+  height: 25%;
+}
+
+.buttonContact {
+  border: 1.5px solid black;
+  padding: 3px;
+  text-decoration: none;
+  color: black;
+}
+
+.buttonContact:hover {
+  opacity: 0.5;
+}
+/*ABOUT END*/
