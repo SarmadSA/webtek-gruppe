@@ -47,11 +47,6 @@ function isValidForm($submittedEmail,$submittedPassword,$submittedRePassword){
 	return $isValid;
 }
 
-/**
-*Return true or false depending on wether the user accepts terms of use or not. 
-*
-*@return return true or false depending on wether the user accepts terms of use or not. 
-*/
 function agreedToTermsOfUse(){
 	$agreedToTermsOfUse = false;
 	if(isset($_POST['checkbox'])){
@@ -60,13 +55,6 @@ function agreedToTermsOfUse(){
 	return $agreedToTermsOfUse;
 }
 
-
-/**
-*Retun true if the submitted email is valid, false otherwise.
-*
-*@param $submittedEmail the email the user submits
-*@return return where the submitted email is valid or not
-*/
 function isValidEmail($submittedEmail) {
     $isValid = false;
     if ((strlen($submittedEmail) > 0) && filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
@@ -146,13 +134,12 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
     <body>
         <!--header-->
 
-
         <form action="signup.php" method="post">
             <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
              <?php printSubmittionMessage($email,$password,$rePassword);?>
             <label for="email">Epost:</label>
             <br>
-            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php echo $email?>">
+            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php if($submitted && !isValidForm($email,$password,$rePassword)){echo $email;}?>">
             <span class="error-message"> * <?php printEmailError($email)?> </span>
             <br>
             <label for="subject">Passord:</label>
