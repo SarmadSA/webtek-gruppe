@@ -19,11 +19,11 @@ if (isset($_POST['submit'])) {
 }
 
 function agreedToTermsOfUse(){
-	$agreeToTermsOfUse = false;
+	$agreedToTermsOfUse = false;
 	if(isset($_POST['checkbox'])){
-		$agreeToTermsOfUse = true;
+		$agreedToTermsOfUse = true;
 	}
-	return $agreeToTermsOfUse;
+	return $agreedToTermsOfUse;
 }
 
 
@@ -128,6 +128,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
             <input type="password" name="repassword" id="subject" placeholder="Enter the subject.."> 
             <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
             <br>
+			<br>
 			<label for="checkbox">I agree to the <a href="https://www.google.no/" target="_blank">terms of use</a></label>
 			<input type="checkbox" id="checkbox" name="checkbox">
 			<span class="error-message">  <?php printagreementError() ?> </span>
