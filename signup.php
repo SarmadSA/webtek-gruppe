@@ -143,12 +143,22 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
     }
 }
 
+function printEmailValue(){
+	global $email;
+	global $password;
+	global $rePassword;
+		
+	if($submitted && !isValidForm($email,$password,$rePassword)){
+		echo $email;
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>Registration form</title>
     </head>
 
     <body>
@@ -159,7 +169,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
              <?php printSubmittionMessage($email,$password,$rePassword);?>
             <label for="email">Epost:</label>
             <br>
-            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php if($submitted && !isValidForm($email,$password,$rePassword)){echo $email;}?>">
+            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php printEmailValue();?>">
             <span class="error-message"> * <?php printEmailError($email)?> </span>
             <br>
             <label for="subject">Passord:</label>
