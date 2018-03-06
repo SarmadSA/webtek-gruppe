@@ -13,8 +13,8 @@ $shortPasswordErr = "Passordet må være minst 6 tegn.";
 $disMatchPasswordErr = "Passordene er ikke like.";
 $agreementErr = "Du må akseptere vilkårene.";
 $faildRegistrarionErr = "Registrering mislyktes, Vennligst prøv igjen!";
-$succesRegistrarionErr_p1 = "Registrering vellykket!";
-$succesRegistrarionErr_p2 = "Ditt innloggins brukernavn er: ";
+$succesRegistrarion_p1 = "Registrering vellykket!";
+$succesRegistrarion_p2 = "Ditt brukernavn er: ";
 
 
 $submitted = false;
@@ -131,26 +131,16 @@ function printagreementError(){
 
 function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedRePassword) {
 	global $submitted; 
-	global $succesRegistrarionErr_p1; 
-	global $succesRegistrarionErr_p2; 
+	global $succesRegistrarion_p1; 
+	global $succesRegistrarion_p2; 
 	global $faildRegistrarionErr;
 	
     if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
-        echo "<p>" . $succesRegistrarionErr_p1 . "<br>" . $succesRegistrarionErr_p2 . $submittedEmail . "</p>" . "<br><br>";
+        echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p><br><br>";
     } 
 	else if ($submitted && !isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
         echo "<p>" . $faildRegistrarionErr . "</p><br><br>";
     }
-}
-
-function printEmailValue(){
-	global $email;
-	global $password;
-	global $rePassword;
-		
-	if($submitted && !isValidForm($email,$password,$rePassword)){
-		echo $email;
-	}
 }
 
 ?>
@@ -158,38 +148,40 @@ function printEmailValue(){
 <html>
     <head>
         <meta charset="UTF-8">
+		<link rel="stylesheet" href="registrationStyle.css">
         <title>Registration form</title>
     </head>
 
     <body>
         <!--header-->
-
-        <form action="signup.php" method="post">
-            <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
-             <?php printSubmittionMessage($email,$password,$rePassword);?>
-            <label for="email">Epost:</label>
-            <br>
-            <input type="text" name="email" id="email" placeholder="Din epost.." value="<?php printEmailValue();?>">
-            <span class="error-message"> * <?php printEmailError($email)?> </span>
-            <br>
-            <label for="subject">Passord:</label>
-            <br>
-            <input type="password" name="password" id="subject" placeholder="Skriv et passord.."> 
-            <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
-            <br>
-            <label for="subject">Skriv passordet på nytt:</label>
-            <br>
-            <input type="password" name="repassword" id="subject" placeholder="Skriv et passord.."> 
-            <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
-            <br>
-			<br>
-			<label for="checkbox">Jeg aksepterer <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
-			<input type="checkbox" id="checkbox" name="checkbox">
-			<span class="error-message">  <?php printagreementError();?> </span>
-			<br>
-			<br>
-            <input type="submit" name="submit" value="Registrer">
-        </form>
+		<section class="registration-form">
+			<form action="signup.php" method="post">
+				<!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
+				 <?php printSubmittionMessage($email,$password,$rePassword);?>
+				<label for="email">Epost:</label>
+				<br>
+				<input type="text" name="email" id="email" placeholder="Din epost.." value="<?php if($submitted && !isValidForm($email,$password,$rePassword)){echo $email;}?>">
+				<span class="error-message"> * <?php printEmailError($email)?> </span>
+				<br>
+				<label for="subject">Passord:</label>
+				<br>
+				<input type="password" name="password" id="subject" placeholder="Skriv et passord.."> 
+				<span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
+				<br>
+				<label for="subject">Skriv passordet på nytt:</label>
+				<br>
+				<input type="password" name="repassword" id="subject" placeholder="Skriv et passord.."> 
+				<span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
+				<br>
+				<br>
+				<label for="checkbox">Jeg aksepterer <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
+				<input type="checkbox" id="checkbox" name="checkbox">
+				<span class="error-message">  <?php printagreementError();?> </span>
+				<br>
+				<br>
+				<input type="submit" name="submit" value="Registrer">
+			</form>
+		</section>
         <br class="clear"/>
 
         <!--Footer-->
