@@ -18,6 +18,21 @@ if (isset($_POST['submit'])) {
     $rePassword = rtrim($rePassword);
 }
 
+function agreedToTermsOfUse(){
+	$agreeToTermsOfUse = false;
+	if(isset($_POST['checkbox'])){
+		$agreeToTermsOfUse = true;
+	}
+	return $agreeToTermsOfUse;
+}
+
+
+/**
+*Retun true if the submitted email is valid, false otherwise.
+*
+*@param $submittedEmail the email the user submits
+*@return return where the submitted email is valid or not
+*/
 function isValidEmail($submittedEmail) {
     $isValid = false;
     if ((strlen($submittedEmail) > 0) && filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
@@ -65,12 +80,19 @@ function printPasswordError($submittedPassword, $submittedrePassword) {
     echo $errorMessage;
 }
 
+function printagreementError(){
+	$errorMessage = "";
+	if(isset($_POST['submit']) && !agreedToTermsOfUse()){
+		$errorMessage = "You must agree to the terms of use";
+	}
+	echo $errorMessage;
+}
+
 function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedRePassword) {
     $submittionMessage = "";
-    if (isset($_POST['submit']) && isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword)) {
-        $submittionMessage = "<p>Successfully registered!</p>" . "<p>Your login username is: " . $submittedEmail . "</p>"
-                . "<br><br>";
-    } else if ((isset($_POST['submit'])) && (!isValidEmail($submittedEmail) || !isValidPassword($submittedPassword) || !isSamePassword($submittedPassword, $submittedRePassword))) {
+    if (isset($_POST['submit']) && isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword) && agreedToTermsOfUse()) {
+        $submittionMessage = "<p>Successfully registered!</p>" . "<p>Your login username is: " . $submittedEmail . "</p>" . "<br><br>";
+    } else if ((isset($_POST['submit'])) && (!isValidEmail($submittedEmail) || !isValidPassword($submittedPassword) || !isSamePassword($submittedPassword, $submittedRePassword) || !agreedToTermsOfUse())) {
         $submittionMessage = "<p>Faild to submit message, please try again!</p><br><br>";
     }
     echo $submittionMessage;
@@ -88,13 +110,13 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
         <!--header-->
 
 
-        <form action="contact.php" method="post">
+        <form action="signup.php" method="post">
             <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
              <?php printSubmittionMessage($email,$password,$rePassword);?>
             <label for="email">E-mail:</label>
             <br>
             <input type="text" name="email" id="email" placeholder="Your email..">
-            <span class="error-message"> * <?php printEmailError($email) ?> </span>
+            <span class="error-message"> * <?php printEmailError($email)?> </span>
             <br>
             <label for="subject">Password:</label>
             <br>
@@ -106,7 +128,11 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
             <input type="password" name="repassword" id="subject" placeholder="Enter the subject.."> 
             <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
             <br>
-            <br>
+			<label for="checkbox">I agree to the <a href="https://www.google.no/" target="_blank">terms of use</a></label>
+			<input type="checkbox" id="checkbox" name="checkbox">
+			<span class="error-message">  <?php printagreementError() ?> </span>
+			<br>
+			<br>
             <input type="submit" name="submit" value="Registrer">
         </form>
         <br class="clear"/>
