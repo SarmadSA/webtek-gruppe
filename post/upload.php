@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once('../logintest.php');
 
@@ -52,12 +53,16 @@ $mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
 $mysqli->real_connect($config['db_host'], $config['db_user'], $config['db_password'], $config['db_name']);
 
 $head = filter_input(INPUT_POST, 'heading');
-$img = "uploads/" . $_FILES['fileToUpload']['name'];
-$uname = $_SESSION['username'];
+$img = "uploads/" . $newfilename;
+$uname = $_SESSION['email'];
 
-$result = $mysqli->query("INSERT INTO posts (`header`,`author`,`img`) VALUES('$head', '$uname', LOAD_FILE('$img')");
+$result = $mysqli->query("INSERT INTO `posts`(`header`, `img`, `author`) VALUES ('$head', '$img', '$uname')");
 if ($result) {
-    echo '<script>window.location="/image/index"</script>';
+    $sql = "SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1";
+    $result = $mysqli->query($sql);
+    while ($row = mysqli_fetch_row($result)) {
+    echo '<script>window.location="../post.php?id=' . $row[0] . '"</script>';
+    }
 } else {
     echo "Error";
 }

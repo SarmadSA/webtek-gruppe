@@ -33,8 +33,8 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
     if ($count == 1) {
         session_start();
         $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $email;
-        header('Location: uploadPost.php');
+        $_SESSION['email'] = $email;
+        header('Location: /webtek/post/uploadPost.php');
     } else {
         $message = "Username and/or Password incorrect.\\nTry again.";
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -44,14 +44,39 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
 $mysqli->close();
 ?>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-
-    <body>
-        <!--header-->
+<html lang="no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Welcome</title>
+  </head>
+  <body>
+    <header class="header">
+        <section class="brand">
+          <a href="????">
+            <!-- <img src="img/placeholder100x100.png" alt="placeholder"> -->
+            <h2 >Brandname</h2>
+          </a>
+        </section>
+        <nav class="mainNav">
+          <ul>
+            <li class="hoverNav"><a href="???">Log in</a></li>
+            <li class="hoverNav"><a href="???">Sign up</a></li>
+          </ul>
+        </nav>
+    </header>
+     <aside class="aside">
+       <nav>
+         <ul>
+           <li class="hoverNav"><a href="???">About</a></li>
+           <li class="hoverNav"><a href="???">Contact</a></li>
+           <li class="hoverNav"><a href="???">Rules</a></li>
+           <li class="hoverNav"><a href="???">Help</a></li>
+           <li class="hoverNav"><a href="???">Terms of Service</a></li>
+         </ul>
+       </nav>
+     </aside>
 
 
         <form action="login.php" method="post">
