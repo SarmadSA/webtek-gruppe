@@ -4,18 +4,21 @@
 }
 /*GLOBAL START*/
 /* HEADER START */
+@font-face {
+  font-family: abeat;
+  src: url(../fonts/abeat.ttf);
+}
 .header {
-  background: grey;
+  background: #404040;
   padding: 20px 10px;
+}
+
+.logo {
+  width: 10%;
 }
 
 .brand {
   float: left;
-}
-
-.brand a{
-  color: black;
-  text-decoration: none;
 }
 
 .mainNav {
@@ -28,11 +31,14 @@
 
 .mainNav li a {
   text-decoration: none;
-  color: black;
+  color: white;
+  font-size: 20px;
+  margin-right: 30px;
+  font-family: "abeat", sans-serif, helvetica;
 }
 
 .secondNav {
-  background: red;
+  background: #004894;
 }
 
 .secondNav li {
@@ -42,6 +48,15 @@
 
 .secondNav li a{
   text-decoration: none;
+  color: white;
+  font-size: 20px;
+}
+
+.hoverNav a:hover {
+  color: #004894;
+}
+
+.hoverNav2 a:hover {
   color: black;
 }
 /* HEADER START */
@@ -49,10 +64,12 @@
 /* ASIDE START */
 .aside  {
   float: left;
-  background: lightgrey;
+  background: #004894;
   position: fixed;
   margin: 10px 20px;
   border: 1px solid black;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .aside ul {
@@ -61,7 +78,7 @@
 
 .aside li a {
   text-decoration: none;
-  color: black;
+  color: white;
 }
 /* ASIDE END */
 /*GLOBAL END*/
@@ -73,7 +90,6 @@
 
 .postSection {
   text-align: center;
-  background: orange;
 }
 
 .postNav  {
@@ -134,5 +150,9 @@
 
 .buttonContact:hover {
   opacity: 0.5;
+}
+
+.memberContent h2{
+  margin-bottom: 15px;
 }
 /*ABOUT END*/
