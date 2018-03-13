@@ -14,10 +14,10 @@
 
 // Define here you own values
 $config = array(
-	"db_name" => "webtek",
-	"db_user" => "root",
-	"db_password" => "",
-	"db_host" => "localhost"
+	"db_name" => "id4736904_loco",
+	"db_user" => "id4736904_shumanick",
+	"db_password" => "5nhp&!fMb?@Q",
+	"db_host" => "localhost",
 );                
 
 error_reporting(E_ALL);
