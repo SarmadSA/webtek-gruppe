@@ -1,8 +1,8 @@
+/*GLOBAL START*/
 * {
   margin: 0;
   padding: 0;
 }
-/*GLOBAL START*/
 /* HEADER START */
 @font-face {
   font-family: abeat;
@@ -45,6 +45,7 @@
 
 .secondNav {
   background: #004894;
+  border-bottom: 1px solid black;
 }
 
 .secondNav li {
@@ -184,5 +185,9 @@
   margin: 30px 0 10px 0;
   font-size: 25px;
   font-family: "abeat";
+}
+
+.rulesul {
+  margin-left: 25px;
 }
 /*TOS END*/
