@@ -2,10 +2,12 @@
 
 .error-message{
 	color: red;
+	font-size: 110%;
 }
 
 .success-message{
 	color:#14A361;
+	font-size: 110%;
 }
 
 .registration-form{
@@ -34,23 +36,6 @@
 
 label {
 	font-size: 130%;
-}
-
-.contact-message {
-	font-family: 'Nanum Gothic', sans-serif;
-	box-sizing: border-box;
-	font-size: 110%;
-	padding: 20px 15px;
-	width: 90%;
-	min-width: 90%;
-	max-width: 90%;
-	height: 250px;
-	min-height: 250px;
-	max-height: inherit;
-	margin: 10px auto 30px auto;
-	border: 0px;
-	border-radius:5px;
-	background-color: rgba(255,255,255,0.8);
 }
 
 .submit-button {

@@ -143,7 +143,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 	
     if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword) && !userExists()) {
         saveToDatabase($submittedPassword, $submittedEmail, $db);
-		echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p><br><br>";
+		echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p>";
     }
 	else if($submitted && userExists()){
 		echo "<p class=\"error-message\">" . $userExistsErr . "</p>";
