@@ -8,6 +8,12 @@
   font-family: abeat;
   src: url(../fonts/abeat.ttf);
 }
+
+@font-face {
+  font-family: pre;
+  src: url(../fonts/pre.otf);
+}
+
 .header {
   background: #404040;
   padding: 20px 10px;
@@ -156,3 +162,27 @@
   margin-bottom: 15px;
 }
 /*ABOUT END*/
+/*TOS START*/
+.tos {
+  margin: 10px 500px;
+}
+
+.tos p{
+  font-family: "pre";
+}
+
+.tos li{
+  font-family: "pre";
+}
+
+.tos h2 {
+  font-size: 43px;
+  font-family: "abeat";
+}
+
+.tos h3 {
+  margin: 30px 0 10px 0;
+  font-size: 25px;
+  font-family: "abeat";
+}
+/*TOS END*/
