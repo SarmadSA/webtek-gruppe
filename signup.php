@@ -184,7 +184,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 				
 
 				<label for="checkbox">Jeg aksepterer <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
-				<input type="checkbox" id="checkbox" name="checkbox">
+				<input type="checkbox" id="checkbox" name="checkbox" <?php if($submitted && !isValidForm($email,$password,$rePassword) && agreedToTermsOfUse()){echo "checked=checked";}?>>
 				
 				<br>
 				<br>
