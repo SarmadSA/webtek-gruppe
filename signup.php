@@ -12,10 +12,10 @@ $emptyPasswordErr = "Vennligst skriv et passord!";
 $shortPasswordErr = "Passordet må være minst 6 tegn.";
 $disMatchPasswordErr = "Passordene er ikke like.";
 $agreementErr = "Du må akseptere vilkårene.";
+$userExistsErr = "Brukeren eksisterer allerede.";
 $faildRegistrarionErr = "Registrering mislyktes, Vennligst prøv igjen!";
 $succesRegistrarion_p1 = "Registrering vellykket!";
 $succesRegistrarion_p2 = "Ditt brukernavn er: ";
-
 
 $submitted = false;
 $email = $password = $rePassword = "";
@@ -38,15 +38,26 @@ if (isset($_POST['submit'])) {
     $rePassword = ltrim($rePassword);
     $rePassword = rtrim($rePassword);
 	
-	//Save to database if the form is valid.
-	if(isValidForm($email,$password,$rePassword)){
+	//Save to database if the form is valid .
+/*	if(isValidForm($email,$password,$rePassword) && !userExists()){
 		saveToDatabase($password, $email, $db);
-	}
-	
+	}*/
 }
 
+function userExists(){
+	global $db;
+	$exists = true;
+	$check = "SELECT * FROM users WHERE email = '$_POST[email]'";
+	$rs = mysqli_query($db,$check);
+	$data = mysqli_fetch_array($rs, MYSQLI_NUM);
+	if($data[0]  == 0) {
+    	$exists = false;
+	}
+	return $exists; 
+} 
+
 function saveToDatabase($submittedPassword, $submittedEmail, $database){
-	$submittedPassword = md5($submittedPassword);
+	$submittedPassword = md5($submittedPassword); // burk PASSWORD()
 	$sql = "INSERT INTO users(email, password) VALUES ('$submittedEmail','$submittedPassword')";
 	mysqli_query($database, $sql);	
 }
@@ -134,13 +145,19 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 	global $succesRegistrarion_p1; 
 	global $succesRegistrarion_p2; 
 	global $faildRegistrarionErr;
+	global $userExistsErr;
+	global $db;
 	
-    if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
-        echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p><br><br>";
-    } 
-	else if ($submitted && !isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
-        echo "<p>" . $faildRegistrarionErr . "</p><br><br>";
+    if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword) && !userExists()) {
+        saveToDatabase($submittedPassword, $submittedEmail, $db);
+		echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p><br><br>";
     }
+	else if ($submitted && !isValidForm($submittedEmail,$submittedPassword,$submittedRePassword)) {
+        echo "<p class=\"error-message\">" . $faildRegistrarionErr . "</p><br><br>";
+    }
+	else if($submitted && userExists()){
+		echo "<p class=\"error-message\">" . $userExistsErr . "</p><br><br>";
+	}
 }
 
 ?>
@@ -155,6 +172,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
     <body>
         <!--header-->
 		<section class="registration-form">
+			<h2>Register</h2>
 			<form action="signup.php" method="post">
 				<!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
 				 <?php printSubmittionMessage($email,$password,$rePassword);?>
