@@ -1,7 +1,11 @@
 <?php
+require_once 'config.php';
 
 //connect to database
-$db = mysqli_connect('localhost', 'root', '', 'registration');
+$mysqli = mysqli_init();
+$mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+$mysqli->real_connect($config['db_host'], $config['db_user'], $config['db_password'], $config['db_name']);
+$tbl_name = "members";
 
 //Error & succes messages
 $emptyEmailErr = "Vennligst skriv din epost!";
@@ -22,9 +26,9 @@ $email = $password = $rePassword = "";
 if (isset($_POST['submit'])) {
 	$submitted = true;
 	
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $rePassword = $_POST['repassword'];
+    $email = $mysqli->real_escape_string(filter_input(INPUT_POST, 'email', FILTER_DEFAULT));
+    $password = $mysqli->real_escape_string(filter_input(INPUT_POST, 'password', FILTER_DEFAULT));
+    $rePassword = $mysqli->real_escape_string(filter_input(INPUT_POST, 'repassword', FILTER_DEFAULT));
 
     //Remove all spaces at the right and the left of the input.
     $email = ltrim($email);
@@ -38,10 +42,11 @@ if (isset($_POST['submit'])) {
 }
 
 function userExists(){
-	global $db;
+	global $tbl_name;
+	global $mysqli;
 	$exists = true;
-	$check = "SELECT * FROM users WHERE email = '$_POST[email]'";
-	$rs = mysqli_query($db,$check);
+	$check = "SELECT * FROM $tbl_name  WHERE username = '$_POST[email]'";
+	$rs = mysqli_query($mysqli,$check);
 	$data = mysqli_fetch_array($rs, MYSQLI_NUM);
 	if($data[0]  == 0) {
     	$exists = false;
@@ -50,8 +55,9 @@ function userExists(){
 } 
 
 function saveToDatabase($submittedPassword, $submittedEmail, $database){
-	$submittedPassword = md5($submittedPassword); // burk PASSWORD()
-	$sql = "INSERT INTO users(email, password) VALUES ('$submittedEmail','$submittedPassword')";
+	global $tbl_name;
+	//$submittedPassword = password("$submittedPassword"); // burk PASSWORD()
+	$sql = "INSERT INTO $tbl_name (username, password) VALUES ('$submittedEmail',password('$submittedPassword'))";
 	mysqli_query($database, $sql);	
 }
 
@@ -139,10 +145,10 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 	global $succesRegistrarion_p2; 
 	global $faildRegistrarionErr;
 	global $userExistsErr;
-	global $db;
+	global $mysqli;
 	
     if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword) && !userExists()) {
-        saveToDatabase($submittedPassword, $submittedEmail, $db);
+        saveToDatabase($submittedPassword, $submittedEmail, $mysqli);
 		echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p>";
     }
 	else if($submitted && userExists()){
@@ -155,7 +161,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 <html>
     <head>
         <meta charset="UTF-8">
-		<link rel="stylesheet" href="registrationStyle.css">
+		<link rel="stylesheet" href="css/registrationStyle.css">
         <title>Registration form</title>
     </head>
 
