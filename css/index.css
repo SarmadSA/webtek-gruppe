@@ -1,0 +1,193 @@
+/*GLOBAL START*/
+* {
+  margin: 0;
+  padding: 0;
+}
+/* HEADER START */
+@font-face {
+  font-family: abeat;
+  src: url(../fonts/abeat.ttf);
+}
+
+@font-face {
+  font-family: pre;
+  src: url(../fonts/pre.otf);
+}
+
+.header {
+  background: #404040;
+  padding: 20px 10px;
+}
+
+.logo {
+  width: 10%;
+}
+
+.brand {
+  float: left;
+}
+
+.mainNav {
+   text-align: right;
+}
+
+.mainNav li{
+  display: inline-block;
+}
+
+.mainNav li a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  margin-right: 30px;
+  font-family: "abeat", sans-serif, helvetica;
+}
+
+.secondNav {
+  background: #004894;
+}
+
+.secondNav li {
+  display: inline-block;
+  margin-left: 10px;
+  position:relative;
+}
+
+.secondNav li a{
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+}
+
+.hoverNav a:hover {
+  color: black;
+}
+
+.hoverNav2 a:hover {
+  color: black;
+}
+/* HEADER START */
+
+/* ASIDE START */
+.aside  {
+  margin: 0 10px;
+  margin-top: 23px;
+  float: left;
+  background: grey;
+  position: relative;
+  padding: 10px;
+  padding-bottom: 100%;
+}
+
+.aside ul {
+  list-style-type: none;
+}
+
+.aside li a {
+  text-decoration: none;
+  color: white;
+}
+/* ASIDE END */
+/*GLOBAL END*/
+
+
+.mainBody {
+
+}
+
+.postSection {
+  text-align: center;
+}
+
+.postNav  {
+ margin-right: 100px;
+}
+
+.postNav li {
+  display: inline-block;
+}
+
+.postNav li a {
+  text-decoration: none;
+  color: black;
+}
+
+.buttonSection {
+  text-align: center;
+}
+
+.buttonSection a {
+  text-decoration: none;
+  color: black;
+  margin: 5px 200px;
+}
+
+/*ABOUT START*/
+.column {
+  float: left;
+  width: 48.5%;
+  margin-bottom: 16px;
+  margin-left: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 650px) {
+    .column {
+        width: 100%;
+        display: block;
+    }
+}
+
+.memberContent {
+  text-align: center;
+  margin: 10px 200px;
+}
+
+.profileAbout {
+  float: left;
+  height: 25%;
+}
+
+.buttonContact {
+  border: 1.5px solid black;
+  padding: 3px;
+  text-decoration: none;
+  color: black;
+}
+
+.buttonContact:hover {
+  opacity: 0.5;
+}
+
+.memberContent h2{
+  margin-bottom: 15px;
+}
+/*ABOUT END*/
+/*TOS START*/
+.tos {
+  margin: 10px 500px;
+}
+
+.tos p{
+  font-family: "pre";
+}
+
+.tos li{
+  font-family: "pre";
+}
+
+.tos h2 {
+  font-size: 43px;
+  font-family: "abeat";
+}
+
+.tos h3 {
+  margin: 30px 0 10px 0;
+  font-size: 25px;
+  font-family: "abeat";
+}
+
+.rulesul {
+  margin-left: 25px;
+}
+/*TOS END*/

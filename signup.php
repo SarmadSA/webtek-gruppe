@@ -1,23 +1,72 @@
 <?php
-$email = "";
-$password = "";
-$rePassword = "";
+require_once 'config.php';
+
+//connect to database
+$mysqli = mysqli_init();
+$mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+$mysqli->real_connect($config['db_host'], $config['db_user'], $config['db_password'], $config['db_name']);
+$tbl_name = "members";
+
+//Error & succes messages
+$emptyEmailErr = "Vennligst skriv din epost!";
+$emailFormatErr = "Ugyldig epost format! Venligst skriv en virkelig epost!";
+$emptyPasswordErr = "Vennligst skriv et passord!";
+$shortPasswordErr = "Passordet må være minst 6 tegn.";
+$disMatchPasswordErr = "Passordene er ikke like.";
+$agreementErr = "Du må akseptere vilkårene.";
+$userExistsErr = "Brukeren eksisterer allerede.";
+$faildRegistrarionErr = "Registrering mislyktes, Vennligst prøv igjen!";
+$succesRegistrarion_p1 = "Registrering vellykket!";
+$succesRegistrarion_p2 = "Ditt brukernavn er: ";
+
+$submitted = false;
+$email = $password = $rePassword = "";
 
 //Check for submittion.
 if (isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $rePassword = $_POST['repassword'];
+	$submitted = true;
+	
+    $email = $mysqli->real_escape_string(filter_input(INPUT_POST, 'email', FILTER_DEFAULT));
+    $password = $mysqli->real_escape_string(filter_input(INPUT_POST, 'password', FILTER_DEFAULT));
+    $rePassword = $mysqli->real_escape_string(filter_input(INPUT_POST, 'repassword', FILTER_DEFAULT));
 
     //Remove all spaces at the right and the left of the input.
     $email = ltrim($email);
     $email = rtrim($email);
+	
 	//Skal det være mulig å starte eller slutte passordet med "space"? da fjerner du koden nederst.
     $password = ltrim($password);
     $password = rtrim($password);
     $rePassword = ltrim($rePassword);
     $rePassword = rtrim($rePassword);
-	
+}
+
+function userExists(){
+	global $tbl_name;
+	global $mysqli;
+	$exists = true;
+	$check = "SELECT * FROM $tbl_name  WHERE username = '$_POST[email]'";
+	$rs = mysqli_query($mysqli,$check);
+	$data = mysqli_fetch_array($rs, MYSQLI_NUM);
+	if($data[0]  == 0) {
+    	$exists = false;
+	}
+	return $exists; 
+} 
+
+function saveToDatabase($submittedPassword, $submittedEmail, $database){
+	global $tbl_name;
+	//$submittedPassword = password("$submittedPassword"); // burk PASSWORD()
+	$sql = "INSERT INTO $tbl_name (username, password) VALUES ('$submittedEmail',password('$submittedPassword'))";
+	mysqli_query($database, $sql);	
+}
+
+function isValidForm($submittedEmail,$submittedPassword,$submittedRePassword){
+	$isValid = false;
+	if(isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword) && agreedToTermsOfUse()){
+		$isValid = true;
+	}
+	return $isValid;
 }
 
 function agreedToTermsOfUse(){
@@ -28,13 +77,6 @@ function agreedToTermsOfUse(){
 	return $agreedToTermsOfUse;
 }
 
-
-/**
-*Retun true if the submitted email is valid, false otherwise.
-*
-*@param $submittedEmail the email the user submits
-*@return return where the submitted email is valid or not
-*/
 function isValidEmail($submittedEmail) {
     $isValid = false;
     if ((strlen($submittedEmail) > 0) && filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
@@ -60,84 +102,94 @@ function isSamePassword($submittedPassword, $submittedRePassword){
 }
 
 function printEmailError($submittedEmail) {
-    $errorMessage = "";
-    if (isset($_POST['submit']) && (strlen($submittedEmail) < 1)) {
-        $errorMessage = "Vennligst skriv din epost!";
-    } else if (isset($_POST['submit']) && !filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
-        $errorMessage = "Ugyldig epost! Venligst skriv din virkelig epost!";
+	global $submitted;	
+	global $emptyEmailErr;	
+	global $emailFormatErr;	
+	
+    if ($submitted && (strlen($submittedEmail) < 1)) {
+        echo "<p class=\"error-message\">" . $emptyEmailErr . "</p>";
+    } 
+	else if ($submitted && !filter_var($submittedEmail, FILTER_VALIDATE_EMAIL)) {
+        echo "<p class=\"error-message\">" . $emailFormatErr . "</p>";
     }
-    echo $errorMessage;
 }
 
 function printPasswordError($submittedPassword, $submittedrePassword) {
-    $errorMessage = "";
-    if (isset($_POST['submit']) && (strlen($submittedPassword) < 1)) {
-        $errorMessage = "Vennligst skriv et passord!";
-    } else if (isset($_POST['submit']) && ((strlen($submittedPassword) < 6) && (strlen($submittedPassword) > 0))) {
-        $errorMessage = "Passordet må være minst 6 tegn.";
+	global $submitted;
+	global $emptyPasswordErr;
+	global $shortPasswordErr;
+	global $disMatchPasswordErr;
+		
+    if ($submitted && (strlen($submittedPassword) < 1)) {
+        echo "<p class=\"error-message\">" . $emptyPasswordErr . "</p>";
+    } 
+	else if ($submitted && ((strlen($submittedPassword) < 6) && (strlen($submittedPassword) > 0))) {
+        echo "<p class=\"error-message\">" . $shortPasswordErr . "</p>";
     }
-    else if(isset($_POST['submit']) && !isSamePassword($submittedPassword, $submittedrePassword)){
-      $errorMessage = "Passordene  er ikke like";
+    else if($submitted && !isSamePassword($submittedPassword, $submittedrePassword)){
+      echo "<p class=\"error-message\">" . $disMatchPasswordErr . "</p>";
     }
-    echo $errorMessage;
 }
 
 function printagreementError(){
-	$errorMessage = "";
-	if(isset($_POST['submit']) && !agreedToTermsOfUse()){
-		$errorMessage = "Du må akseptere vilkårene for bruk";
+	global $submitted;
+	global $agreementErr;
+	if($submitted && !agreedToTermsOfUse()){
+		echo "<p class=\"error-message\">" . $agreementErr . "</p><br>";
 	}
-	echo $errorMessage;
 }
 
 function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedRePassword) {
-    $submittionMessage = "";
-    if (isset($_POST['submit']) && isValidEmail($submittedEmail) && isValidPassword($submittedPassword) && isSamePassword($submittedPassword, $submittedRePassword) && agreedToTermsOfUse()) {
-        $submittionMessage = "<p>Registrering vellykket!</p>" . "<p>Ditt innloggins brukernavn er: " . $submittedEmail . "</p>" . "<br><br>";
-    } else if ((isset($_POST['submit'])) && (!isValidEmail($submittedEmail) || !isValidPassword($submittedPassword) || !isSamePassword($submittedPassword, $submittedRePassword) || !agreedToTermsOfUse())) {
-        $submittionMessage = "<p>Registrering mislyktes, Vennligst prøv igjen!</p><br><br>";
+	global $submitted; 
+	global $succesRegistrarion_p1; 
+	global $succesRegistrarion_p2; 
+	global $faildRegistrarionErr;
+	global $userExistsErr;
+	global $mysqli;
+	
+    if ($submitted && isValidForm($submittedEmail,$submittedPassword,$submittedRePassword) && !userExists()) {
+        saveToDatabase($submittedPassword, $submittedEmail, $mysqli);
+		echo "<p class=\"success-message\">" . $succesRegistrarion_p1 . "<br>" . $succesRegistrarion_p2 . $submittedEmail . "</p>";
     }
-    echo $submittionMessage;
+	else if($submitted && userExists()){
+		echo "<p class=\"error-message\">" . $userExistsErr . "</p>";
+	}
 }
-
+include 'templates/header_template.php';
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
 
-    <body>
         <!--header-->
+		<section class="registration-form">
+			<h2 class="headinhg">Registrer</h2>
+			<form action="signup.php" method="post">
+				<!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
+				<?php 
+					printSubmittionMessage($email,$password,$rePassword);
+					printEmailError($email);
+					printPasswordError($password, $rePassword);
+					printagreementError();
+				?>
+				<label for="email">Epost:</label>
+				<input type="text" name="email" id="email" placeholder="Din epost.." class="form-input input-placeholder focus-style" value="<?php if($submitted && !isValidForm($email,$password,$rePassword)){echo $email;}?>">
+				
+	
+				<label for="subject">Passord:</label>
+				<input type="password" name="password" id="subject" placeholder="Skriv et passord.." class="form-input input-placeholder focus-style"> 
+				
 
+				<label for="subject">Skriv passordet på nytt:</label>
+				<input type="password" name="repassword" id="subject" placeholder="Skriv et passord.." class="form-input input-placeholder focus-style"> 
+				
 
-        <form action="signup.php" method="post">
-            <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
-             <?php printSubmittionMessage($email,$password,$rePassword);?>
-            <label for="email">Epost:</label>
-            <br>
-            <input type="text" name="email" id="email" placeholder="Din epost..">
-            <span class="error-message"> * <?php printEmailError($email)?> </span>
-            <br>
-            <label for="subject">Passord:</label>
-            <br>
-            <input type="password" name="password" id="subject" placeholder="Skriv et passord.."> 
-            <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
-            <br>
-            <label for="subject">Skriv passordet på nytt:</label>
-            <br>
-            <input type="password" name="repassword" id="subject" placeholder="Skriv et passord.."> 
-            <span class="error-message"> * <?php printPasswordError($password, $rePassword) ?> </span>
-            <br>
-			<br>
-			<label for="checkbox">Jeg er enig i <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
-			<input type="checkbox" id="checkbox" name="checkbox">
-			<span class="error-message">  <?php printagreementError();?> </span>
-			<br>
-			<br>
-            <input type="submit" name="submit" value="Registrer">
-        </form>
+				<label for="checkbox">Jeg aksepterer <a href="https://www.google.no/" target="_blank">vilkårene for bruk</a></label>
+				<input type="checkbox" id="checkbox" name="checkbox" <?php if($submitted && !isValidForm($email,$password,$rePassword) && agreedToTermsOfUse()){echo "checked=checked";}?>>
+				
+				<br>
+				<br>
+				
+				<input type="submit" name="submit" value="Registrer" class="submit-button focus-style">
+			</form>
+		</section>
         <br class="clear"/>
 
         <!--Footer-->

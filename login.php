@@ -1,4 +1,5 @@
 <?php
+include 'templates/header_template.php';
 require_once 'config.php';
 
 $tbl_name = "members"; // Table name 
@@ -18,9 +19,7 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
     $email = rtrim($email);
     $password = ltrim($password);
     $password = rtrim($password);
-    
-    echo "<script type='text/javascript'>alert('$email');</script>";
-        
+     
 
     $query = "SELECT * FROM $tbl_name WHERE username = '$email' AND password = password('$password')";
     $mysqli_result = $mysqli->query($query);
@@ -34,11 +33,10 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
         session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $email;
-        header('Location: /webtek/post/uploadPost.php');
+        header('Location: index.php');
     } else {
         $message = "Username and/or Password incorrect.\\nTry again.";
         echo "<script type='text/javascript'>alert('$message');</script>";
-        echo '<script>window.location="../webtek/login.php"</script>';
     }
 }
 $mysqli->close();
@@ -48,53 +46,27 @@ $mysqli->close();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/loginStyle.css">
     <link rel="stylesheet" href="css/index.css">
-    <title>Welcome</title>
+    <title>Logg inn</title>
   </head>
-  <body>
-    <header class="header">
-        <section class="brand">
-          <a href="????">
-            <!-- <img src="img/placeholder100x100.png" alt="placeholder"> -->
-            <h2 >Brandname</h2>
-          </a>
-        </section>
-        <nav class="mainNav">
-          <ul>
-            <li class="hoverNav"><a href="???">Log in</a></li>
-            <li class="hoverNav"><a href="???">Sign up</a></li>
-          </ul>
-        </nav>
-    </header>
-     <aside class="aside">
-       <nav>
-         <ul>
-           <li class="hoverNav"><a href="???">About</a></li>
-           <li class="hoverNav"><a href="???">Contact</a></li>
-           <li class="hoverNav"><a href="???">Rules</a></li>
-           <li class="hoverNav"><a href="???">Help</a></li>
-           <li class="hoverNav"><a href="???">Terms of Service</a></li>
-         </ul>
-       </nav>
-     </aside>
-
-
-        <form action="login.php" method="post">
+ 
+	<section class="registration-form">
+		<h2 class="headinhg">Logg inn</h2>
+		<form action="login.php" method="post">
             <!--Prints a message when submitting, telleing the user whether the submittion was succsessfull or faild-->
             <?php /* printSubmittionMessage($email,$password,$rePassword); */ ?>
-            <label for="email">E-mail:</label>
-            <br>
-            <input type="text" name="email" id="email" placeholder="Your email..">
-            <span class="error-message"> <?php /* printEmailError($email) */ ?> </span>
-            <br>
-            <label for="subject">Password:</label>
-            <br>
-            <input type="password" name="password" id="password" placeholder="Enter the subject.."> 
-            <span class="error-message"> <?php /* printPasswordError($password, $rePassword) */ ?> </span>
-            <br>
-            <br>
-            <input type="submit" name="submit" value="logg inn">
+            <label for="email">Epost:</label>
+
+            <input type="email" name="email" id="email" placeholder="Eposten din.." class="form-input input-placeholder focus-style">
+
+            <label for="password">Passord:</label>
+
+            <input type="password" name="password" id="password" placeholder="Passordet.." class="form-input input-placeholder focus-style"> 
+
+            <input type="submit" name="submit" value="logg inn" class="submit-button focus-style">
         </form>
+	</section>
         <br class="clear"/>
 
         <!--Footer-->

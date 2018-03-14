@@ -17,7 +17,7 @@ $config = array(
 	"db_name" => "webtek",
 	"db_user" => "root",
 	"db_password" => "",
-	"db_host" => "localhost"
+	"db_host" => "localhost",
 );                
 
 error_reporting(E_ALL);
