@@ -64,7 +64,7 @@ $mysqli->close();
 
             <input type="password" name="password" id="password" placeholder="Passordet.." class="form-input input-placeholder focus-style"> 
 
-            <input type="submit" name="submit" value="logg inn" class="submit-button focus-style">
+            <input type="submit" name="submit" value="logg inn" class="submit-button">
         </form>
 	</section>
         <br class="clear"/>

@@ -45,7 +45,7 @@ label {
 	width: 80px;
 	border-style: none;
 	border-radius: 5px;
-    background-color: rgba(0,149,46,1.00);
+    background-color: #004894;
 	color: white;
 	text-shadow:none; 
 	box-shadow: none;
@@ -54,25 +54,30 @@ label {
 }
 
 .submit-button:hover{
-	background-color: rgba(0,207,85,1.00);
+	background-color: #007CFF;
+}
+
+.submit-button:focus{
+	outline: none;
+	box-shadow: 0 0 0pt 0.0pt #004894;
 }
 
 .focus-style:focus {
-	outline: none !important;
+	outline: none;
 	box-shadow: 0 0 2pt 0.3pt rgba(0,149,46,1.00);
 }
 
 label a{
-	color: rgba(0,149,46,1.00);
+	color: #004894;
 	text-decoration: none;
 	transition: 0.4s ease;
 }
 
 label a:hover{
-	color: rgba(0,207,85,1.00);
+	color: #007CFF;
 }
 
 .headinhg{
     margin-bottom: 12px;
-	color: rgba(0,149,46,1.00); /*#004894*/
+	color: #004894;
 }

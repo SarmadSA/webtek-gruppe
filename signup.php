@@ -188,7 +188,7 @@ include 'templates/header_template.php';
 				<br>
 				<br>
 				
-				<input type="submit" name="submit" value="Registrer" class="submit-button focus-style">
+				<input type="submit" name="submit" value="Registrer" class="submit-button">
 			</form>
 		</section>
         <br class="clear"/>
