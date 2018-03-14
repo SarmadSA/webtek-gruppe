@@ -135,7 +135,7 @@ function printagreementError(){
 	global $submitted;
 	global $agreementErr;
 	if($submitted && !agreedToTermsOfUse()){
-		echo "<p class=\"error-message\">" . $agreementErr . "</p><br>";
+		echo "<p class=\"error-message\">" . $agreementErr . "</p>";
 	}
 }
 
@@ -155,17 +155,9 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 		echo "<p class=\"error-message\">" . $userExistsErr . "</p>";
 	}
 }
-
+include 'templates/header_template.php';
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-		<link rel="stylesheet" href="css/registrationStyle.css">
-        <title>Registration form</title>
-    </head>
 
-    <body>
         <!--header-->
 		<section class="registration-form">
 			<h2 class="headinhg">Registrer</h2>
@@ -176,6 +168,7 @@ function printSubmittionMessage($submittedEmail, $submittedPassword, $submittedR
 					printEmailError($email);
 					printPasswordError($password, $rePassword);
 					printagreementError();
+					if($submitted && !isValidForm($email,$password,$rePassword)){echo "<br>";}
 				?>
 				<label for="email">Epost:</label>
 				<input type="text" name="email" id="email" placeholder="Din epost.." class="form-input input-placeholder focus-style" value="<?php if($submitted && !isValidForm($email,$password,$rePassword)){echo $email;}?>">

@@ -1,6 +1,6 @@
 <?php
-
-//require_once 'config.php';
+include 'templates/header_template.php';
+require_once 'config.php';
 
 $tbl_name = "members"; // Table name 
 
@@ -19,9 +19,7 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
     $email = rtrim($email);
     $password = ltrim($password);
     $password = rtrim($password);
-    
-    echo "<script type='text/javascript'>alert('$email');</script>";
-        
+     
 
     $query = "SELECT * FROM $tbl_name WHERE username = '$email' AND password = password('$password')";
     $mysqli_result = $mysqli->query($query);
@@ -35,11 +33,10 @@ if (filter_input(INPUT_POST, 'email', FILTER_DEFAULT) !== null) {
         session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $email;
-        header('Location: /webtek/post/uploadPost.php');
+        header('Location: index.php');
     } else {
         $message = "Username and/or Password incorrect.\\nTry again.";
         echo "<script type='text/javascript'>alert('$message');</script>";
-        echo '<script>window.location="../webtek/login.php"</script>';
     }
 }
 $mysqli->close();
@@ -49,7 +46,7 @@ $mysqli->close();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="loginStyle.css">
+	<link rel="stylesheet" href="css/loginStyle.css">
     <link rel="stylesheet" href="css/index.css">
     <title>Logg inn</title>
   </head>

@@ -73,5 +73,6 @@ label a:hover{
 }
 
 .headinhg{
+    margin-bottom: 12px;
 	color: rgba(0,149,46,1.00); /*#004894*/
 }

@@ -124,7 +124,7 @@
 
 #loadMore:focus {
 	outline: none;
-	box-shadow: 0 0 2pt 0.3pt #004894;
+	box-shadow: 0 0 0pt 0.0pt #004894;
 }
 
 .postSection {
