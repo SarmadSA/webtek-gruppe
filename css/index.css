@@ -225,6 +225,10 @@
 /*TOS END*/
 
 /*upload*/
+.col-lg h1{
+	margin-bottom: 20px;
+	color: #004894;
+}
 
 .text-light.container {
     background: #f5f5f5;
@@ -234,7 +238,10 @@
     margin: 20px auto;
     height: inherit;
     border-radius: 15px;
-    color: #004894;
+}
+
+#fileToUpload{
+	margin-top: 15px;
 }
 
 .input-field {
@@ -249,7 +256,6 @@
     padding: 0 10px;
     box-sizing: border-box;
 }
-
 
 .btn-success {
 	transition: 0.4s ease;
