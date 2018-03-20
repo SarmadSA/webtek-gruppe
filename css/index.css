@@ -98,7 +98,7 @@
 .img {
     width: 300px !important;
 }
-
+/*Load more styling*/
 #loadMore{
 	transition: 0.3s ease;
 	box-sizing: border-box;
