@@ -20,7 +20,7 @@
 }
 
 .logo {
-  width: 10%;
+  width: 6vw;
 }
 
 .brand {
@@ -73,7 +73,7 @@
   float: left;
   background: #004894;
   position: fixed;
-  margin: 10px 20px;
+  margin: 35px 20px;
   border: 1px solid black;
   border-radius: 20px;
   padding: 10px;
@@ -165,7 +165,7 @@
 /*ABOUT END*/
 /*TOS START*/
 .tos {
-  margin: 10px 500px;
+  margin: 3vh 30vw;
 }
 
 .tos p{
@@ -177,7 +177,7 @@
 }
 
 .tos h2 {
-  font-size: 43px;
+  font-size: 6vh;
   font-family: "abeat";
 }
 
